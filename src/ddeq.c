@@ -91,15 +91,15 @@ histype history;
 /***************************************************************************/
 
 
-void rk23(state,newstate,g,newg,error,coeff,ns,time,dt,clear)
-	double *state,*newstate,*g,*newg,*error,*coeff,time,dt;int ns;
+void rk23(state,newstate,g,newg,errors,coeff,ns,time,dt,clear)
+	double *state,*newstate,*g,*newg,*errors,*coeff,time,dt;int ns;
 	int clear; /* Bobby */
 
 	/* Takes a single integration step from time to time+dt using a 3rd order
 	   embedded Runge-Kutta Fehlberg method:
 	   E.Hairer, S.P.Norsett & G.Wanner 1987, Solving Ordinary differential
 	   Equations I. springer-Verlag Berlin. p170 RKF2(3)B
-	   The routine returns an estimated error vector for adaptive timestepping.
+	   The routine returns an estimated errors vector for adaptive timestepping.
 	   The gradient of the state variables is to be given in function grad().
 	   The routine uses the lower order scheme for updating,
 	   fortunately Fehlberg optimised the coefficients for the lower order
@@ -149,7 +149,7 @@ be the same pointer/array */
 	grad(k4,newstate,coeff,time+dt);
 	for (i=0;i<ns;i++)
 	{ newg[i]=k4[i];
-		error[i]=state[i]+(cc1*k1[i]+cc3*k3[i]+cc4*k4[i])*dt-newstate[i];
+		errors[i]=state[i]+(cc1*k1[i]+cc3*k3[i]+cc4*k4[i])*dt-newstate[i];
 	}
 }
 
@@ -209,7 +209,7 @@ void inithisbuff(nhv,histsize,nlag,clear)
 	for (i=0;i<nhv;i++)
 		history.gbuff[i]=(double *)calloc((size_t)history.size,sizeof(double));
 	if (!history.gbuff[nhv-1])
-	{ PBSerror("History buffer too long");
+	{ error("History buffer too long");
 	}
 	history.offset= -1L;
 }
@@ -276,7 +276,7 @@ double pastgradient(i,t,markno)
 	k1=k+1L;if (k1==size) k1=0L;
 	if (t<x[k]) {
 		Rprintf("\nERROR: lag for variable %d too large at %g\n",i,history.last_time-t);
-		PBSerror("lag too large for history buffer - try increasing the value of ‘hbsize’");
+		error("Lag too large for history buffer - try increasing the value of 'hbsize'");
 	}
 	x0=x[k];x1=x[k1];
 #ifdef SWITCHES  /* some code for not extrapolating through a switch */
@@ -315,7 +315,7 @@ double pastvalue(i,t,markno)
 	{
 		Rprintf("\nERROR: lag for variable %d too large at %g\nx[k]=%g   k=%d   t=%g\n",i,
 				history.last_time-t,x[k],k,t);
-		PBSerror("lag too large for history buffer - try increasing the value of ‘hbsize’");
+		error("Lag too large for history buffer - try increasing the value of 'hbsize'");
 	}
 	x0=x[k];x1=x[k1];
 #ifdef SWITCHES  /* some code for not extrapolating through a switch */
@@ -347,7 +347,7 @@ double zeropos(x1,x2,x3,s1,s2,s3)
 		udge=1.00000001;
 	}
 	z=x3-x2;y=x2-x1;zpy=z+y;
-	if (z==0.0||y==0.0) PBSerror("Error in switching: zero switch interval");
+	if (z==0.0||y==0.0) error("Error in switching: zero switch interval");
 	a1=a=s2;c1=c=(z*s1+y*s3-zpy*s2)/(zpy*z*y);b1=b=(s2-s1)/y+c*y;
 	d=b*b-4.0*a*c;c*=2.0;
 	p= -a/b; /* linear only approximation - in case c numerically zero */
@@ -483,7 +483,7 @@ double istep(sw0,newsws,s0,news,g,newg,c,err,t0,t1,nsw,ns,flickedswitch,clear)
 				sp1+=udge*ds;udge*=10.0;
 			} while (sp1==minp);
 	}
-	PBSerror("Problem with switch logic");return(t0);
+	error("Problem with switch logic");return(t0);
 
 }
 
@@ -516,13 +516,13 @@ void dde(s,c,t0,t1,dt,eps,otimes,no_otimes, ns,nsw,nhv,hbsize,nlag,reset,fixstep
 	int clear;  /* Bobby */
 
 {
-  double D,Da,errmax,rerr,target,t,ti;
+  double D,Da,errmax,rerr,target,t=0;
   static double *err,*newsws,*sws,*news,*newg,*dum,*sp,*nswp,*swp,*nsp,*e0,*scale;
 	static double *g,mindt,maxdt;
 	static double tout, oldt, *sout, *olds, *oldg; /* bjc 2007-05-08*/
 	static int first=1;
 	long i,iout=1L;
-	int swi;
+	int swi=0;
 
 	if(clear && first == 0) { /* Bobby */
 		free(g); first = 1; 
@@ -572,7 +572,7 @@ void dde(s,c,t0,t1,dt,eps,otimes,no_otimes, ns,nsw,nhv,hbsize,nlag,reset,fixstep
 		updatehistory(g,s,c,t0,0);
 	}
 
-	ti=t=t0;
+	t=t0;
 	sp=s;
 	D = (*dt);
 	if (otimes[0]==t0) { 
