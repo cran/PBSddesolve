@@ -1,4 +1,4 @@
-be3846c45a3d8587638b44f3dd736b22 *DESCRIPTION
+1a899d4ea3e4026ff595bff8b8fb719a *DESCRIPTION
 4f957f65a12681b08f8b8a661d7b59f0 *NAMESPACE
 33a59327c8d6e04bca527deeb873bb36 *R/dde.r
 e9747673bdc746d3a6feda5ed07573a9 *R/zzz.r
@@ -17,7 +17,7 @@ afdb5e98de8df429cacd92a6df6bd98b *inst/demo_files/cooling_doc.pdf
 4ea19cc2974fc763badaa561879a6d1f *inst/demo_files/icecream_win.txt
 a69764f507c35efb19105a42633058c7 *inst/demo_files/lorenz_doc.pdf
 2379e1f4c49979fbd5f38edb3c2a5cf5 *inst/demo_files/lorenz_win.txt
-c46e7ff2a2f7bc4c63830b9b7bac535b *inst/doc/ChangeLog.txt
+4b420f2d84130a61102b73914144c39f *inst/doc/ChangeLog.txt
 5bb403223db296bb87b604e0bc86ec48 *inst/doc/License.txt
 3dbbe83eccbba426a3320d3597a1f3c9 *inst/doc/PBSddesolve-UG.pdf
 fda5e240d89918bef16bf2c9d3f68da4 *inst/doc/PBSddesolveIntro.pdf
@@ -26,11 +26,13 @@ bdb6f2b1cb0c7d66db4014e586689bd4 *inst/doc/solv95.pdf
 12a392abb8802d3a683eabd3e5abd05a *inst/unitTests/run_tests.r
 607dec8b0625150ca4c913c40a35db3d *inst/unitTests/runit.dde.r
 6f10cc80dea3d2959b00c8c4858e057a *man/PBSddesolve.Rd
-13fc791511c4b04a53b1403bcebeba12 *man/dde.Rd
+3ca0019b760c2e23fefaccd666882457 *man/dde.Rd
+471de8ff7b860adccb7cbf5253fb470a *man/dot-PBSddeEnv.Rd
+364bb6de21bc3c9f83aa909d703a01db *man/dot-onClosePBSddeExamples.Rd
 32febb6c0b8e095a85a86b8ef1b40a17 *man/pastvalue.Rd
-645deb77a63cd9f1646d0b18189a8ae7 *src/PBSddesolve.c
+8d0aa9e6502a32081398f430e1eb5678 *src/PBSddesolve.c
 432f5e6a1bcd32405ded079357350c42 *src/PBSddesolve.h
-2d71bd7c396000353af61748cfb27483 *src/ddeq.c
+19225f0836fd94438dea94ed1307b438 *src/ddeq.c
 7c72c9da94f863cd2a400fe514400fe2 *src/ddeq.h
 8122cddf97ed56384fe690466b80c1a8 *src/ddesolve95.h
 0fc10fba51e58e88521d063516ae6d1d *src/init.c
